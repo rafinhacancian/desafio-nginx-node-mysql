@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+
+  nginx:
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: rafinhacancian/desafio-nginx
+    environment:
+      - TZ=America/Sao_Paulo
+    container_name: nginx
+    networks: 
+      - desafionet
+    ports:
+      - "8080:80"
+    depends_on:
+      - nodejs
+
+  nodejs:
+    build: 
+        context: ./nodejs
+        dockerfile: Dockerfile
+    image: rafinhacancian/desafio-nodejs
+    environment:
+      - TZ=America/Sao_Paulo
+    container_name: nodejs
+    networks: 
+      - desafionet
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    restart: always
+    tty: true
+    volumes: 
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=America/Sao_Paulo
+    container_name: mysql
+    networks: 
+      - desafionet
+
+networks:
+  desafionet:
+    driver: bridge
