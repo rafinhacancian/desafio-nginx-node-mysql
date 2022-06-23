@@ -12,10 +12,16 @@ const config = {
   database: "nodedb"
 }
 
-//Insert DB
 const pool = mysql.createPool(config);
-pool.query(`INSERT INTO people(name) VALUES (CONCAT('Rafa - ', NOW()));`, function (err) {
+
+//Create table
+pool.query(`CREATE TABLE IF NOT EXISTS people(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255));`, function (err) {
   if (err) throw err;
+
+  //Insert DB
+  pool.query(`INSERT INTO people(name) VALUES (CONCAT('Rafa - ', NOW()));`, function (err) {
+    if (err) throw err;
+  });
 });
 
 //Get all names
