@@ -25,7 +25,7 @@ services:
     environment:
       - TZ=America/Sao_Paulo
     container_name: nodejs
-    entrypoint: dockerize -wait tcp://mysql:3306 -timeout 50s docker-entrypoint.sh node src/server.js 
+    entrypoint: dockerize -wait tcp://mysql:3306 -timeout 120s docker-entrypoint.sh node src/server.js 
     networks: 
       - desafionet
     depends_on:
